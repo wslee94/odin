@@ -51,19 +51,15 @@
       }
 
       function getTimeStamp(d) {
-        return (
-          d.getFullYear() +
-          "-" +
-          leadingZero(d.getMonth() + 1) +
-          "-" +
-          leadingZero(d.getDate()) +
-          " " +
-          leadingZero(d.getHours()) +
-          ":" +
-          leadingZero(d.getMinutes()) +
-          ":" +
-          leadingZero(d.getSeconds())
-        );
+        return {
+          date: `${d.getFullYear()}-${leadingZero(
+            d.getMonth() + 1
+          )}-${leadingZero(d.getDate())}`,
+
+          time: `${leadingZero(d.getHours())}:${leadingZero(
+            d.getMinutes()
+          )}:${leadingZero(d.getSeconds())}`,
+        };
       }
 
       function getCurrentTime(param) {
@@ -99,13 +95,14 @@
         const seconds_until_death = diff_seconds * 3;
 
         dateObj30.setSeconds(dateObj30.getSeconds() + seconds_until_death);
-        const result = getTimeStamp(dateObj30);
-        document.getElementById("result").innerHTML = result;
+        const { date, time } = getTimeStamp(dateObj30);
+        document.getElementById("resultDate").value = date;
+        document.getElementById("resultTime").value = time;
       }
     </script>
   </head>
   <body>
-    <table>
+    <table style="width: 100%">
       <tr>
         <th>피(%)</th>
         <th>시간</th>
@@ -165,7 +162,16 @@
           />
         </td>
         <td>
-          <div id="result"></div>
+          <div style="display: flex">
+            <input id="resultDate" type="date" readonly />
+            <input
+              id="resultTime"
+              type="time"
+              step="1"
+              style="margin-left: 5px"
+              readonly
+            />
+          </div>
         </td>
       </tr>
     </table>
