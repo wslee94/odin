@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>odin</title>
+    <style>
+      table,
+      th,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+
+      td,
+      th {
+        padding: 10px;
+        text-align: center;
+      }
+
+      .button {
+        border: 0;
+        padding: 10px 20px;
+        text-align: center;
+        color: #fff;
+        background-color: rgba(220, 0, 0, 1);
+        border-radius: 10px;
+        text-shadow: 1px 1px 1px #000;
+        background-image: linear-gradient(
+          to top left,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0.2) 30%,
+          rgba(0, 0, 0, 0)
+        );
+        box-shadow: inset 2px 2px 3px rgba(255, 255, 255, 0.6),
+          inset -2px -2px 3px rgba(0, 0, 0, 0.6);
+      }
+
+      .button:hover {
+        background-color: rgba(255, 0, 0, 1);
+      }
+
+      .button:active {
+        box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6),
+          inset 2px 2px 3px rgba(0, 0, 0, 0.6);
+      }
+    </style>
+    <script>
+      function leadingZero(num) {
+        return `0${num}`.slice(-2);
+      }
+
+      function getTimeStamp(d) {
+        return (
+          d.getFullYear() +
+          "-" +
+          leadingZero(d.getMonth() + 1) +
+          "-" +
+          leadingZero(d.getDate()) +
+          " " +
+          leadingZero(d.getHours()) +
+          ":" +
+          leadingZero(d.getMinutes()) +
+          ":" +
+          leadingZero(d.getSeconds())
+        );
+      }
+
+      function getCurrentTime(param) {
+        const now = new Date();
+
+        const year = now.getFullYear();
+        const month = leadingZero(now.getMonth() + 1);
+        const day = leadingZero(now.getDate());
+
+        const hour = leadingZero(now.getHours());
+        const minute = leadingZero(now.getMinutes());
+        const second = leadingZero(now.getSeconds());
+        document.getElementById(
+          `setDate${param}`
+        ).value = `${year}-${month}-${day}`;
+
+        document.getElementById(
+          `setTime${param}`
+        ).value = `${hour}:${minute}:${second}`;
+      }
+
+      function pridictDeath() {
+        const date40 = document.getElementById("setDate40").value;
+        const time40 = document.getElementById("setTime40").value;
+
+        const date30 = document.getElementById("setDate30").value;
+        const time30 = document.getElementById("setTime30").value;
+
+        const dateObj40 = new Date(`${date40} ${time40}`);
+        const dateObj30 = new Date(`${date30} ${time30}`);
+
+        const diff_seconds = (dateObj30.getTime() - dateObj40.getTime()) / 1000;
+        const seconds_until_death = diff_seconds * 3;
+
+        dateObj30.setSeconds(dateObj30.getSeconds() + seconds_until_death);
+        const result = getTimeStamp(dateObj30);
+        document.getElementById("result").innerHTML = result;
+      }
+    </script>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th>피(%)</th>
+        <th>시간</th>
+      </tr>
+      <tr>
+        <td>40</td>
+        <td>
+          <div style="display: flex">
+            <input id="setDate40" type="date" />
+            <input
+              id="setTime40"
+              type="time"
+              step="1"
+              style="margin-left: 5px"
+            />
+            <input
+              id="setCurrent40"
+              class="button"
+              type="button"
+              value="현재시간 자동입력"
+              style="margin-left: 5px"
+              onclick="getCurrentTime(40)"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>30</td>
+        <td>
+          <div style="display: flex">
+            <input id="setDate30" type="date" />
+            <input
+              id="setTime30"
+              type="time"
+              step="1"
+              style="margin-left: 5px"
+            />
+            <input
+              id="setCurrent30"
+              class="button"
+              type="button"
+              value="현재시간 자동입력"
+              style="margin-left: 5px"
+              onclick="getCurrentTime(30)"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input
+            id="predictDeath"
+            class="button"
+            type="button"
+            value="예상 컷 구하기"
+            onclick="pridictDeath()"
+          />
+        </td>
+        <td>
+          <div id="result"></div>
+        </td>
+      </tr>
+    </table>
+  </body>
+  <script>
+    document.getElementById("setDate40").value = new Date()
+      .toISOString()
+      .substring(0, 10);
+
+    document.getElementById("setDate30").value = new Date()
+      .toISOString()
+      .substring(0, 10);
+  </script>
+</html>
